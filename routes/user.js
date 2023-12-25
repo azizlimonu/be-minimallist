@@ -3,8 +3,8 @@ const userController = require('../controllers/userController');
 const authenticateMiddleware = require('../middlewares/authenticate');
 
 const api = express.Router();
-
-api.post('/registerAdminUser', authenticateMiddleware.decodeToken, userController.registerAdminUser);
+// authenticateMiddleware.decodeToken
+api.post('/registerAdminUser', userController.registerAdminUser);
 api.post('/loginUser', userController.loginUser);
 
 api.get('/listAdminUsers/:filter?', authenticateMiddleware.decodeToken, userController.listAdminUsers);
