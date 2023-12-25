@@ -1,17 +1,17 @@
-var jwt = require('jwt-simple');
-var moment = require('moment');
-var secure = 'secure';
+const jwt = require('jwt-simple');
+const moment = require('moment');
+const secretKey = 'secure';
 
-exports.createToken = function(cliente){
-    var payload = {
-        sub: cliente._id,
-        nombres: cliente.nombres,
-        apellidos: cliente.apellidos,
-        email: cliente.email,
-        genero: cliente.genero,
+exports.createToken = function (user) {
+    const payload = {
+        sub: user._id,
+        names: user.firstName,
+        lastNames: user.lastName,
+        email: user.email,
+        gender: user.gender,
         iat: moment().unix(),
         exp: moment().add(7, 'day').unix()
     }
 
-    return jwt.encode(payload, secure);
+    return jwt.encode(payload, secretKey);
 };

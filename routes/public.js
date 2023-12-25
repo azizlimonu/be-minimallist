@@ -3,11 +3,11 @@ var publicController = require('../controllers/publicController');
 
 var api = express.Router();
 
-api.get('/obtener_nuevos_productos', publicController.obtener_nuevos_productos);
-api.get('/obtener_productos_descuento', publicController.obtener_productos_descuento);
-api.get('/obtener_productos_shop', publicController.obtener_productos_shop);
-api.get('/listar_categorias_shop', publicController.listar_categorias_shop);
-api.get('/obtener_producto_slug/:slug', publicController.obtener_producto_slug);
-api.get('/obtener_producto_categoria/:categoria', publicController.obtener_producto_categoria);
+api.get('/getNewProducts', publicController.getNewProducts);
+api.get('/getDiscountedProducts', publicController.getDiscountedProducts);
+api.get('/getShopProducts', publicController.getShopProducts);
+api.get('/listShopCategories', publicController.listShopCategories);
+api.get('/getProductBySlug/:slug', publicController.getProductBySlug);
+api.get('/getProductByCategory/:category', publicController.getProductByCategory);
 
 module.exports = api;

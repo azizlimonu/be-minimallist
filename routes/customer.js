@@ -1,14 +1,14 @@
-var express = require('express');
-var customerController = require('../controllers/customerController');
-var cauthenticate = require('../middlewares/cauthenticate');
+const express = require('express');
+const customerController = require('../controllers/customerController');
+const authenticateMiddleware = require('../middlewares/authenticate');
 
-var api = express.Router();
+const api = express.Router();
 
-api.post('/crear_producto_carrito', cauthenticate.decodeToken, customerController.crear_producto_carrito);
-api.get('/obtener_carrito_cliente', cauthenticate.decodeToken, customerController.obtener_carrito_cliente);
-api.delete('/eliminar_producto_carrito/:id', cauthenticate.decodeToken, customerController.eliminar_producto_carrito);
-api.post('/crear_direccion_cliente', cauthenticate.decodeToken, customerController.crear_direccion_cliente);
-api.get('/obtener_direcciones_cliente', cauthenticate.decodeToken, customerController.obtener_direcciones_cliente);
-api.delete('/eliminar_direccion_cliente/:id', cauthenticate.decodeToken, customerController.eliminar_direccion_cliente);
+api.post('/createProductInCart', authenticateMiddleware.decodeToken, customerController.createProductInCart);
+api.get('/getCustomerCart', authenticateMiddleware.decodeToken, customerController.getCustomerCart);
+api.delete('/removeProductFromCart/:id', authenticateMiddleware.decodeToken, customerController.removeProductFromCart);
+api.post('/createCustomerAddress', authenticateMiddleware.decodeToken, customerController.createCustomerAddress);
+api.get('/getCustomerAddresses', authenticateMiddleware.decodeToken, customerController.getCustomerAddresses);
+api.delete('/removeCustomerAddress/:id', authenticateMiddleware.decodeToken, customerController.removeCustomerAddress);
 
 module.exports = api;

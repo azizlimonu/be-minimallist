@@ -1,80 +1,80 @@
-var Producto = require('../models/producto');
-var Variedad = require('../models/variedad');
-var Categoria = require('../models/categoria');
-var Galeria = require('../models/galeria');
+const Product = require('../models/product');
+const Variety = require('../models/variety');
+const Category = require('../models/category');
+const Gallery = require('../models/gallery');
 
-const obtener_nuevos_productos = async function (req, res) {
-    var productos = await Producto.find({ estado: true }).sort({ createdAt: -1 }).limit(4);
-    res.status(200).send(productos);
+const getNewProducts = async function (req, res) {
+    var products = await Product.find({ state: true }).sort({ createdAt: -1 }).limit(4);
+    res.status(200).send(products);
 }
 
-const obtener_productos_descuento = async function (req, res) {
-    var productos = await Producto.find({ descuento: true, estado: true }).limit(4);
-    res.status(200).send(productos);
+const getDiscountedProducts = async function (req, res) {
+    var products = await Product.find({ discount: true, state: true }).limit(4);
+    res.status(200).send(products);
 }
 
-const obtener_productos_shop = async function (req, res) {
-    var productos = await Producto.find({ estado: true }).sort({ createdAt: -1 });
-    var data_productos = [];
+const getShopProducts = async function (req, res) {
+    var products = await Product.find({ state: true }).sort({ createdAt: -1 });
+    var dataProducts = [];
 
-    for (var item of productos) {
-        var variedades = await Variedad.find({ producto: item._id });
+    for (var item of products) {
+        var varieties = await Variety.find({ product: item._id });
 
-        data_productos.push({
-            titulo: item.titulo,
+        dataProducts.push({
+            title: item.title,
             slug: item.slug,
-            categoria: item.categoria,
-            precio: item.precio,
-            descripcion: item.descripcion,
-            portada: item.portada,
-            str_variedad: item.str_variedad,
-            estado: item.estado,
-            descuento: item.descuento,
+            category: item.category,
+            price: item.price,
+            description: item.description,
+            cover: item.cover,
+            varietyString: item.varietyString,
+            state: item.state,
+            discount: item.discount,
             createdAt: item.createdAt,
-            variedades
+            varieties
         });
     }
 
-    res.status(200).send(data_productos);
+    res.status(200).send(dataProducts);
 }
 
-const listar_categorias_shop = async function (req, res) {
-    var regs = await Categoria.find({ estado: true }).sort({ titulo: 1 });
-    var categorias = [];
+const listShopCategories = async function (req, res) {
+    var regs = await Category.find({ state: true }).sort({ title: 1 });
+    var categories = [];
 
     for (var item of regs) {
-        var productos = await Producto.find({ categoria: item.titulo });
+        var products = await Product.find({ category: item.title });
 
-        categorias.push({
-            categoria: item,
-            nproductos: productos.length
+        categories.push({
+            category: item,
+            numProducts: products.length
         });
     }
 
-    res.status(200).send(categorias);
+    res.status(200).send(categories);
 }
 
-const obtener_producto_slug = async function (req, res) {
+const getProductBySlug = async function (req, res) {
     var slug = req.params['slug'];
-    var producto = await Producto.findOne({ slug: slug });
-    var variedades = await Variedad.find({ producto: producto._id });
-    var galeria = await Galeria.find({ producto: producto._id });
+    var product = await Product.findOne({ slug: slug });
+    var varieties = await Variety.find({ product: product._id });
+    var gallery = await Gallery.find({ product: product._id });
 
-    res.status(200).send({ producto, variedades, galeria });
+    res.status(200).send({ product, varieties, gallery });
 }
 
-const obtener_producto_categoria = async function (req, res) {
-    var categoria = req.params['categoria'];
-    var productos = await Producto.find({ categoria: categoria }).limit(6);
+const getProductByCategory = async function (req, res) {
+    var category = req.params['category'];
+    var products = await Product.find({ category: category }).limit(6);
 
-    res.status(200).send({ productos });
+    res.status(200).send({ products });
 }
 
 module.exports = {
-    obtener_nuevos_productos,
-    obtener_productos_descuento,
-    obtener_productos_shop,
-    listar_categorias_shop,
-    obtener_producto_slug,
-    obtener_producto_categoria
+    getNewProducts,
+    getDiscountedProducts,
+    getShopProducts,
+    listShopCategories,
+    getProductBySlug,
+    getProductByCategory
 }

@@ -1,35 +1,35 @@
-var express = require('express');
-var productoController = require('../controllers/productController');
-var authenticate = require('../middlewares/authenticate');
-var multipart = require('connect-multiparty');
+const express = require('express');
+const productController = require('../controllers/productController');
+const authenticateMiddleware = require('../middlewares/authenticate');
+const multipart = require('connect-multiparty');
 
-var api = express.Router();
-var path = multipart({ uploadDir: './uploads/productos' });
-var path_ingreso = multipart({ uploadDir: './uploads/facturas' });
-var path_galeria = multipart({ uploadDir: './uploads/galeria' });
+const api = express.Router();
+const path = multipart({ uploadDir: './uploads/products' });
+const path_invoice = multipart({ uploadDir: './uploads/invoices' });
+const path_gallery = multipart({ uploadDir: './uploads/gallery' });
 
-api.post('/registro_producto_admin', [authenticate.decodeToken, path], productoController.registro_producto_admin);
+api.post('/registerProductAdmin', [authenticateMiddleware.decodeToken, path], productController.registerProductAdmin);
 
-api.get('/listar_productos_admin/:filtro?', authenticate.decodeToken, productoController.listar_productos_admin);
-api.get('/obtener_portada_producto/:img', productoController.obtener_portada_producto);
-api.get('/obtener_producto_admin/:id', authenticate.decodeToken, productoController.obtener_producto_admin);
-api.get('/listar_activos_productos_admin', authenticate.decodeToken, productoController.listar_activos_productos_admin);
+api.get('/listProductsAdmin/:filter?', authenticateMiddleware.decodeToken, productController.listProductsAdmin);
+api.get('/getProductCover/:img', productController.getProductCover);
+api.get('/getProductAdmin/:id', authenticateMiddleware.decodeToken, productController.getProductAdmin);
+api.get('/listActiveProductsAdmin', authenticateMiddleware.decodeToken, productController.listActiveProductsAdmin);
 
-api.put('/actualizar_producto_admin/:id', [authenticate.decodeToken, path], productoController.actualizar_producto_admin);
+api.put('/updateProductAdmin/:id', [authenticateMiddleware.decodeToken, path], productController.updateProductAdmin);
 
-api.post('/registro_variedad_producto', authenticate.decodeToken, productoController.registro_variedad_producto);
-api.get('/obtener_variedades_producto/:id', authenticate.decodeToken, productoController.obtener_variedades_producto);
-api.delete('/eliminar_variedad_producto/:id', authenticate.decodeToken, productoController.eliminar_variedad_producto);
+api.post('/registerVarietyProduct', authenticateMiddleware.decodeToken, productController.registerVarietyProduct);
+api.get('/getVarietiesProduct/:id', authenticateMiddleware.decodeToken, productController.getVarietiesProduct);
+api.delete('/deleteVarietyProduct/:id', authenticateMiddleware.decodeToken, productController.deleteVarietyProduct);
 
-api.post('/registro_ingreso_admin', [authenticate.decodeToken, path_ingreso], productoController.registro_ingreso_admin);
+api.post('/registerIncomeAdmin', [authenticateMiddleware.decodeToken, path_invoice], productController.registerIncomeAdmin);
 
-api.post('/subir_imagen_producto_admin', [authenticate.decodeToken, path_galeria], productoController.subir_imagen_producto_admin);
-api.get('/obtener_galeria_producto/:img', productoController.obtener_galeria_producto);
-api.get('/obtener_galeria_producto_admin/:id', authenticate.decodeToken, productoController.obtener_galeria_producto_admin);
-api.delete('/eliminar_galeria_producto_admin/:id', authenticate.decodeToken, productoController.eliminar_galeria_producto_admin);
+api.post('/uploadProductImageAdmin', [authenticateMiddleware.decodeToken, path_gallery], productController.uploadProductImageAdmin);
+api.get('/getProductGallery/:img', productController.getProductGallery);
+api.get('/getProductGalleryAdmin/:id', authenticateMiddleware.decodeToken, productController.getProductGalleryAdmin);
+api.delete('/deleteProductGalleryAdmin/:id', authenticateMiddleware.decodeToken, productController.deleteProductGalleryAdmin);
 
-api.post('/crear_categoria_admin', authenticate.decodeToken, productoController.crear_categoria_admin);
-api.get('/listar_categorias_admin', authenticate.decodeToken, productoController.listar_categorias_admin);
-api.put('/cambiar_estado_producto_admin/:id', authenticate.decodeToken, productoController.cambiar_estado_producto_admin);
+api.post('/createCategoryAdmin', authenticateMiddleware.decodeToken, productController.createCategoryAdmin);
+api.get('/listCategoriesAdmin', authenticateMiddleware.decodeToken, productController.listCategoriesAdmin);
+api.put('/changeProductStateAdmin/:id', authenticateMiddleware.decodeToken, productController.changeProductStateAdmin);
 
 module.exports = api;
