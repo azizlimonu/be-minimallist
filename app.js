@@ -1,11 +1,11 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var bodyparser = require('body-parser');
-var port = process.env.port || 8080;
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyparser = require('body-parser');
+const port = process.env.port || 8080;
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-
-var app = express();
+require('dotenv')
+const app = express();
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -18,11 +18,11 @@ io.on("connection", (socket) => {
     })
 });
 
-var cliente_router = require('./routes/cliente');
-var usuario_router = require('./routes/usuario');
-var producto_router = require('./routes/producto');
-var public_router = require('./routes/public');
-var customer_router = require('./routes/customer');
+const clientRoutes = require('./routes/client');
+const userRoutes = require('./routes/user');
+const productRoutes = require('./routes/product');
+const publicRoutes = require('./routes/public');
+const customerRoutes = require('./routes/customer');
 
 app.use(bodyparser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyparser.json({ limit: '50mb', extended: true }));
@@ -45,10 +45,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api', cliente_router);
-app.use('/api', usuario_router);
-app.use('/api', producto_router);
-app.use('/api', public_router);
-app.use('/api', customer_router);
+app.use('/api', clientRoutes);
+app.use('/api', userRoutes);
+app.use('/api', productRoutes);
+app.use('/api', publicRoutes);
+app.use('/api', customerRoutes);
 
 module.exports = app;
