@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-const port = process.env.port || 8080;
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-require('dotenv')
+require('dotenv').config(); // Load environment variables
+
+const port = process.env.PORT || 8080;
 const app = express();
 
 const httpServer = createServer(app);
@@ -27,12 +28,15 @@ const customerRoutes = require('./routes/customer');
 app.use(bodyparser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyparser.json({ limit: '50mb', extended: true }));
 
-mongoose.connect('mongodb://127.0.0.1:27017/tienda', (err, res) => {
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}, (err) => {
     if (err) {
         console.log(err);
     } else {
         httpServer.listen(port, function () {
-            console.log('Servidor Corriendo en ' + port);
+            console.log('Server Running on Port ' + port);
         });
     }
 });
